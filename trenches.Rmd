@@ -50,3 +50,44 @@ D16 <- fetch_table(urlD16)
 D15 <- fetch_table(urlD15)
 D14 <- fetch_table(urlD14)
 ```
+
+
+```{r warning=FALSE, message=FALSE}
+correct_header <- function(df)
+{
+  colnames(df) = df[1, ]
+  df = df[-1, ] 
+  return(df)
+}
+
+D17 <- correct_header(D17)
+D16 <- correct_header(D16)
+D15 <- correct_header(D15)
+D14 <- correct_header(D14)
+
+correct_col_names <- function(df)
+{
+  colnames(df)[15] <- 'Pass_Attempts'
+  colnames(df)[16] <- 'Pass_Yds'
+  colnames(df)[17] <- 'Pass_TDs'
+  colnames(df)[18] <- 'Pass_Ints'
+  colnames(df)[19] <- 'Rush_Attempts'
+  colnames(df)[20] <- 'Rush_Yds'
+  colnames(df)[21] <- 'Rush_TDs'
+  colnames(df)[23] <- 'Rec_Yds'
+  colnames(df)[24] <- 'Rec_TDs'
+  colnames(df)[29] <- 'College_Stats'
+  return(df)
+}
+
+D17 <- correct_col_names(D17)
+D16 <- correct_col_names(D16)
+D15 <- correct_col_names(D15)
+D14 <- correct_col_names(D14)
+
+#Only the first three rounds
+D17<- D17 %>% select(Rnd, Tm, Pos) %>% filter(Rnd == 1 | Rnd == 2 | Rnd == 3)
+D16<- D16 %>% select(Rnd, Tm, Pos) %>% filter(Rnd == 1 | Rnd == 2 | Rnd == 3)
+D15<- D15 %>% select(Rnd, Tm, Pos) %>% filter(Rnd == 1 | Rnd == 2 | Rnd == 3)
+D14<- D14 %>% select(Rnd, Tm, Pos) %>% filter(Rnd == 1 | Rnd == 2 | Rnd == 3)
+```
