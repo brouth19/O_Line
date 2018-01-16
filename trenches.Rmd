@@ -183,3 +183,13 @@ four_year <- four_year %>% full_join(rams, by=c('Team', 'Yds_G', 'Pts_G', 'Seaso
 
 four_year <- four_year %>% group_by(Team) %>% summarise(yards_avg = mean(Yds_G), points_avg = mean(Pts_G))
 ```
+
+
+```{r message=FALSE, warning=FALSE}
+four_year_total <- four_year %>% full_join(draft_four_year, by=c('Team'='Tm'))
+
+four_year_total[19,"num_o_line"] = 2
+four_year_total[28,"num_o_line"] = 4
+
+four_year_total <- head(four_year_total, n = 32)
+```
