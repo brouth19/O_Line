@@ -115,3 +115,31 @@ D16 <- ram_charger(D16)
 D15 <- ram_charger(D15)
 D14 <- ram_charger(D14)
 ```
+
+```{r warning=FALSE, message=FALSE}
+draft_four_year <- D17 %>% 
+              full_join(D16,by=c('Rnd','Tm', 'Pos'))%>%
+              full_join(D15,by=c('Rnd','Tm', 'Pos'))%>%
+              full_join(D14,by=c('Rnd','Tm', 'Pos'))
+```
+
+```{r warning=FALSE, message=FALSE}
+
+fullFromAbrv <-function(x) {
+   
+  team.codes<-data.frame(
+
+  abrv <- as.factor(c("ARI", "ATL", "BAL", "BUF", "CAR", "CHI", "CIN", "CLE", "DAL", "DEN", "DET",    "GNB", "HOU", "IND", "JAX", "KAN", "LAC", "LAR", "MIA", "MIN", "NWE", "NOR", "NYG", "NYJ", "OAK",   "PHI", "PIT", "SEA", "SFO", "TAM", "TEN", "WAS")),
+
+  full <- as.factor(c("Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills",    "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys",   "Denver Broncos", "Detroit Lions", "Green Bay Packers", "Houston Texans", "Indianapolis Colts",     "Jacksonville Jaguars", "Kansas City Chiefs", "Los Angeles Chargers", "Los Angeles Rams","Miami     Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants",    "New York Jets", "Oakland Raiders", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco    49ers", "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Redskins"))
+  )
+  
+  team.x<-data.frame(abrv=x)
+   
+  refac.x<-team.codes$full[match(team.x$abrv,team.codes$abrv)]
+     
+  return(refac.x)
+}
+
+draft_four_year$Tm <- fullFromAbrv(draft_four_year$Tm)
+```
