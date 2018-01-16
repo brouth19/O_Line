@@ -193,3 +193,12 @@ four_year_total[28,"num_o_line"] = 4
 
 four_year_total <- head(four_year_total, n = 32)
 ```
+
+```{r warning=FALSE, message=FALSE}
+four_year_total %>% ggplot(aes(x=num_o_line, y = yards_avg)) + geom_point() + stat_smooth() + ggtitle("Rushing Yards Per Game By Number of Early Round Draft Picks Spent on Offensive Line") + ylab("Rushing Yards Per Game") + xlab("Number of Offensive Lineman Selected in the Early Rounds") + geom_text(aes(label = ifelse(Team == 'New York Giants','NYG','')))
+```
+
+
+```{r warning=FALSE, message=FALSE}
+four_year_total %>% ggplot(aes(x=num_o_line, y = points_avg)) + geom_point() + stat_smooth() + ggtitle("Points Per Game By Number of Early Round Draft Picks Spent on Offensive Line") + ylab("Points Per Game") + xlab("Number of Offensive Lineman Selected in the Early Rounds") + geom_text(aes(label = ifelse(Team == 'New York Giants','NYG','')))
+```
