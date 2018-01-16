@@ -143,3 +143,43 @@ fullFromAbrv <-function(x) {
 
 draft_four_year$Tm <- fullFromAbrv(draft_four_year$Tm)
 ```
+
+
+```{r warning=FALSE, message=FALSE}
+draft_four_year <- draft_four_year %>% group_by(Tm) %>% mutate(o_line = ifelse(Pos == 'T' | Pos == 'G' | Pos == 'OL' | Pos == 'C',1,0)) %>% summarise(num_o_line = sum(o_line))
+```
+
+```{r warning=FALSE, message=FALSE}
+T17 <- T17 %>% select('Team', 'Yds/G', 'Pts/G') %>% mutate(Season = '17')
+T16 <- T16 %>% select('Team', 'Yds/G', 'Pts/G') %>% mutate(Season = '16')
+T15 <- T15 %>% select('Team', 'Yds/G', 'Pts/G') %>% mutate(Season = '15')
+T14 <- T14 %>% select('Team', 'Yds/G', 'Pts/G') %>% mutate(Season = '14')
+
+names(T17)[names(T17) == 'Yds/G'] = 'Yds_G'; names(T17)[names(T17) == 'Pts/G'] = 'Pts_G'
+names(T16)[names(T16) == 'Yds/G'] = 'Yds_G'; names(T16)[names(T16) == 'Pts/G'] = 'Pts_G' 
+names(T15)[names(T15) == 'Yds/G'] = 'Yds_G'; names(T15)[names(T15) == 'Pts/G'] = 'Pts_G'
+names(T14)[names(T14) == 'Yds/G'] = 'Yds_G'; names(T14)[names(T14) == 'Pts/G'] = 'Pts_G'
+```
+
+```{r warning=FALSE, message=FALSE}
+four_year <- T17 %>% 
+              full_join(T16,by=c('Team', 'Yds_G', 'Pts_G', 'Season'))%>%
+              full_join(T15,by=c('Team', 'Yds_G', 'Pts_G', 'Season'))%>%
+              full_join(T14,by=c('Team', 'Yds_G', 'Pts_G', 'Season'))
+```
+
+```{r warning=FALSE, message=FALSE}
+four_year <- as.data.frame(four_year)
+
+rams <- four_year %>% filter(Team == "Los Angeles Rams" | Team == "St. Louis Rams")
+rams <- rams %>% mutate(Team = ifelse(Team == "St. Louis Rams", "Los Angeles Rams", "Los Angeles Rams"))
+
+chargers <- four_year %>% filter(Team == "Los Angeles Chargers" | Team == "San Diego Chargers")
+chargers <- chargers %>% mutate(Team = ifelse(Team == "San Diego Chargers", "Los Angeles Chargers", "Los Angeles Chargers"))
+
+four_year <- four_year %>% filter(Team != "Los Angeles Chargers" & Team != "San Diego Chargers" & Team != "Los Angeles Rams" & Team != "St. Louis Rams")
+
+four_year <- four_year %>% full_join(rams, by=c('Team', 'Yds_G', 'Pts_G', 'Season')) %>% full_join(chargers, by=c('Team', 'Yds_G', 'Pts_G', 'Season'))
+
+four_year <- four_year %>% group_by(Team) %>% summarise(yards_avg = mean(Yds_G), points_avg = mean(Pts_G))
+```
