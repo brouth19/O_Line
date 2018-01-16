@@ -1,0 +1,52 @@
+---
+title: "The Importance of the Offensive Line"
+author: "Brendan Routh"
+date: "1/15/2018"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+```{r warning=FALSE, message=FALSE}
+library(rvest)
+library(methods)
+library(tidyverse)
+
+urlT17 <- 'http://www.nfl.com/stats/categorystats?tabSeq=2&offensiveStatisticCategory=RUSHING&conference=ALL&role=TM&season=2017&seasonType=REG&d-447263-s=RUSHING_YARDS_PER_GAME_AVG&d-447263-o=2&d-447263-n=1'
+
+urlT16 <- 'http://www.nfl.com/stats/categorystats?archive=true&conference=null&role=TM&offensiveStatisticCategory=RUSHING&defensiveStatisticCategory=null&season=2016&seasonType=REG&tabSeq=2&qualified=false&Submit=Go'
+
+urlT15 <- 'http://www.nfl.com/stats/categorystats?archive=true&conference=null&role=TM&offensiveStatisticCategory=RUSHING&defensiveStatisticCategory=null&season=2015&seasonType=REG&tabSeq=2&qualified=false&Submit=Go'
+
+urlT14 <- 'http://www.nfl.com/stats/categorystats?archive=true&conference=null&role=TM&offensiveStatisticCategory=RUSHING&defensiveStatisticCategory=null&season=2014&seasonType=REG&tabSeq=2&qualified=false&Submit=Go'
+
+urlD17 <- 'https://www.pro-football-reference.com/years/2017/draft.htm'
+
+urlD16 <- 'https://www.pro-football-reference.com/years/2016/draft.htm'
+
+urlD15 <- 'https://www.pro-football-reference.com/years/2015/draft.htm'
+
+urlD14 <- 'https://www.pro-football-reference.com/years/2014/draft.htm'
+
+fetch_table <- function(url)
+{
+  tables <- url %>%
+    read_html() %>%
+    html_nodes("table")
+  
+  TableX = html_table(tables[[1]], fill = TRUE, header = TRUE)
+  
+  return(TableX)
+}
+
+T17 <- fetch_table(urlT17)
+T16 <- fetch_table(urlT16)
+T15 <- fetch_table(urlT15)
+T14 <- fetch_table(urlT14)
+
+D17 <- fetch_table(urlD17)
+D16 <- fetch_table(urlD16)
+D15 <- fetch_table(urlD15)
+D14 <- fetch_table(urlD14)
+```
