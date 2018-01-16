@@ -91,3 +91,27 @@ D16<- D16 %>% select(Rnd, Tm, Pos) %>% filter(Rnd == 1 | Rnd == 2 | Rnd == 3)
 D15<- D15 %>% select(Rnd, Tm, Pos) %>% filter(Rnd == 1 | Rnd == 2 | Rnd == 3)
 D14<- D14 %>% select(Rnd, Tm, Pos) %>% filter(Rnd == 1 | Rnd == 2 | Rnd == 3)
 ```
+
+
+```{r warning=FALSE, message=FALSE}
+
+ram_charger <- function(df)
+{
+  d_rams <- df %>% filter(Tm == "LAR" | Tm == "STL")
+  d_rams <- d_rams %>% mutate(Tm = ifelse(Tm == "STL", "LAR", "LAR"))
+
+  d_chargers <- df %>% filter(Tm == "LAC" | Tm == "SDG")
+  d_chargers <- d_chargers %>% mutate(Tm = ifelse(Tm == "SDG", "LAC", "LAC"))
+
+  df <- df %>% filter(Tm != "LAC" & Tm != "SDG" & Tm != "LAR" & Tm != "STL")
+
+  df <- df %>% full_join(d_rams, by=c('Rnd', 'Tm', 'Pos')) %>% full_join(d_chargers, by=c('Rnd', 'Tm', 'Pos'))
+  
+  return(df)
+}
+
+D17 <- ram_charger(D17)
+D16 <- ram_charger(D16)
+D15 <- ram_charger(D15)
+D14 <- ram_charger(D14)
+```
